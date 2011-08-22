@@ -15,19 +15,17 @@
 
 +(Rdio *)rdioInstance
 {
-	return [(id)[[UIApplication sharedApplication] delegate] rdio];
+    return [(id)[[UIApplication sharedApplication] delegate] rdio];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	rdio = [[Rdio alloc] initWithConsumerKey:CONSUMER_KEY andSecret:CONSUMER_SECRET delegate:viewController];
-	[[rdio player] setDelegate:viewController];
-	
-	// Add the view controller's view to the window and display.
-	[self.window addSubview:viewController.view];
-	[self.window makeKeyAndVisible];
-	
-	NSLog(@"app launched, rdio=%@, player=%@", rdio, rdio.player);
-    
+    rdio = [[Rdio alloc] initWithConsumerKey:CONSUMER_KEY andSecret:CONSUMER_SECRET delegate:viewController];
+    [[rdio player] setDelegate:viewController];
+
+    // Add the view controller's view to the window and display.
+    [self.window addSubview:viewController.view];
+    [self.window makeKeyAndVisible];
+
     return YES;
 }
 

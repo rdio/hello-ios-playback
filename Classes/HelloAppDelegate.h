@@ -11,10 +11,10 @@
 #import "HelloViewController.h"
 
 @interface HelloAppDelegate : NSObject <UIApplicationDelegate> {
-	UIWindow *window;
-	HelloViewController *viewController;
+    UIWindow *window;
+    HelloViewController *viewController;
 	
-	Rdio *rdio;
+    Rdio *rdio;
 }
 
 +(Rdio *)rdioInstance;

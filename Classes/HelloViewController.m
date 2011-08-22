@@ -7,38 +7,38 @@
 
 -(RDPlayer*)getPlayer
 {
-	if (player == nil) {
-		player = [HelloAppDelegate rdioInstance].player;
-	}
-	return player;
+    if (player == nil) {
+        player = [HelloAppDelegate rdioInstance].player;
+    }
+    return player;
 }
 
 #pragma mark -
 #pragma mark UI event and state handling
 
 - (IBAction) playClicked:(id) button {
-	if (!playing) {
-		[[self getPlayer] playSource:@"t2742133"];
-	} else {
-		[[self getPlayer] togglePause];
-	}
+    if (!playing) {
+        [[self getPlayer] playSource:@"t2742133"];
+    } else {
+        [[self getPlayer] togglePause];
+    }
 }
 
 - (IBAction) loginClicked:(id) button {
-	if (loggedIn) {
-		[[HelloAppDelegate rdioInstance] logout];
-	} else {
-		[[HelloAppDelegate rdioInstance] authorizeFromController:self];
-	}
+    if (loggedIn) {
+        [[HelloAppDelegate rdioInstance] logout];
+    } else {
+        [[HelloAppDelegate rdioInstance] authorizeFromController:self];
+    }
 }
 
 - (void) setLoggedIn:(BOOL)logged_in {
-	loggedIn = logged_in;
-	if (logged_in) {
-		[loginButton setTitle:@"Log Out" forState: UIControlStateNormal];
-	} else {
-		[loginButton setTitle:@"Log In" forState: UIControlStateNormal];
-	}
+    loggedIn = logged_in;
+    if (logged_in) {
+        [loginButton setTitle:@"Log Out" forState: UIControlStateNormal];
+    } else {
+        [loginButton setTitle:@"Log In" forState: UIControlStateNormal];
+    }
 }
 
 
@@ -46,19 +46,19 @@
 #pragma mark RdioDelegate
 
 - (void) rdioDidAuthorizeUser:(NSDictionary *)user withAccessToken:(NSString *)accessToken {
-	[self setLoggedIn:TRUE];
+    [self setLoggedIn:YES];
 }
 
 - (void) rdioAuthorizationFailed:(NSString *)error {
-	[self setLoggedIn:FALSE];
+    [self setLoggedIn:NO];
 }
 
 - (void) rdioAuthorizationCancelled {
-	[self setLoggedIn:FALSE];
+    [self setLoggedIn:NO];
 }
 
 - (void) rdioDidLogout {
-	[self setLoggedIn:FALSE];
+    [self setLoggedIn:NO];
 }
 
 
@@ -66,20 +66,18 @@
 #pragma mark RDPlayerDelegate
 
 - (BOOL) rdioIsPlayingElsewhere {
-	// let the Rdio framework tell the user.
-	return NO;
+    // let the Rdio framework tell the user.
+    return NO;
 }
 
 - (void) rdioPlayerChangedFromState:(RDPlayerState)fromState toState:(RDPlayerState)state {
-	playing = (state != RDPlayerStateInitializing &&
-			   state != RDPlayerStateStopped);
-	paused = (state == RDPlayerStatePaused);
-	if (paused || !playing) {
-		[playButton setTitle:@"Play" forState:UIControlStateNormal];
-	} else {
-		[playButton setTitle:@"Pause" forState:UIControlStateNormal];
-	}
+    playing = (state != RDPlayerStateInitializing && state != RDPlayerStateStopped);
+    paused = (state == RDPlayerStatePaused);
+    if (paused || !playing) {
+        [playButton setTitle:@"Play" forState:UIControlStateNormal];
+    } else {
+        [playButton setTitle:@"Pause" forState:UIControlStateNormal];
+    }
 }
-
 
 @end
