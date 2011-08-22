@@ -18,7 +18,8 @@
 
 - (IBAction) playClicked:(id) button {
     if (!playing) {
-        [[self getPlayer] playSource:@"t2742133"];
+        NSArray* keys = [@"t2742133,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
+        [[self getPlayer] playSources:keys];
     } else {
         [[self getPlayer] togglePause];
     }
