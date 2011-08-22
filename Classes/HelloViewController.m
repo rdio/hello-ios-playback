@@ -3,40 +3,31 @@
 
 @implementation HelloViewController
 
-@synthesize playButton, loginButton;
+@synthesize playButton, loginButton, player;
 
-
-BOOL loggedIn;
-BOOL playing;
-BOOL paused;
-RDPlayer* player;
-
--(void)viewDidLoad
+-(RDPlayer*)getPlayer
 {
-	[super viewDidLoad];
-	
-	player = [HelloAppDelegate rdioInstance].player;
+	if (player == nil) {
+		player = [HelloAppDelegate rdioInstance].player;
+	}
+	return player;
 }
 
 #pragma mark -
 #pragma mark UI event and state handling
 
 - (IBAction) playClicked:(id) button {
-	NSLog(@"play clicked");
-	RDPlayer* player = [[HelloAppDelegate rdioInstance] player];
 	if (!playing) {
-		[player playSource:@"t2742133"];
+		[[self getPlayer] playSource:@"t2742133"];
 	} else {
-		[player togglePause];
+		[[self getPlayer] togglePause];
 	}
 }
 
 - (IBAction) loginClicked:(id) button {
 	if (loggedIn) {
-		NSLog(@"logout");
 		[[HelloAppDelegate rdioInstance] logout];
 	} else {
-		NSLog(@"logging in");
 		[[HelloAppDelegate rdioInstance] authorizeFromController:self];
 	}
 }

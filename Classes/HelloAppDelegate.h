@@ -14,7 +14,7 @@
 	UIWindow *window;
 	HelloViewController *viewController;
 	
-	Rdio *rdio_;
+	Rdio *rdio;
 }
 
 +(Rdio *)rdioInstance;

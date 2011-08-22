@@ -11,8 +11,7 @@
 
 @implementation HelloAppDelegate
 
-@synthesize window, viewController;
-@synthesize rdio = _rdio;
+@synthesize window, viewController, rdio;
 
 +(Rdio *)rdioInstance
 {
@@ -20,12 +19,14 @@
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	_rdio = [[Rdio alloc] initWithConsumerKey:CONSUMER_KEY andSecret:CONSUMER_SECRET delegate:viewController];
-	[[_rdio player] setDelegate:viewController];
+	rdio = [[Rdio alloc] initWithConsumerKey:CONSUMER_KEY andSecret:CONSUMER_SECRET delegate:viewController];
+	[[rdio player] setDelegate:viewController];
 	
 	// Add the view controller's view to the window and display.
 	[self.window addSubview:viewController.view];
 	[self.window makeKeyAndVisible];
+	
+	NSLog(@"app launched, rdio=%@, player=%@", rdio, rdio.player);
     
     return YES;
 }

@@ -2,3 +2,4 @@ build
 Hello.xcodeproj/*.mode1v3
 Hello.xcodeproj/*.pbxuser
 ConsumerCredentials.h
+.*.swp
