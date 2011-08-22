@@ -2,12 +2,12 @@
 #import "Rdio/Rdio.h"
 
 @interface HelloViewController : UIViewController<RdioDelegate,RDPlayerDelegate> {
-	UIButton *playButton;
-	UIButton *loginButton;
-	BOOL loggedIn;
-	BOOL playing;
-	BOOL paused;
-	RDPlayer* player;
+    UIButton *playButton;
+    UIButton *loginButton;
+    BOOL loggedIn;
+    BOOL playing;
+    BOOL paused;
+    RDPlayer* player;
 }
 
 @property (nonatomic, retain) IBOutlet UIButton *playButton;
