@@ -69,12 +69,22 @@
 
 /**
  * Attempts to reauthorize using an access token from a previous session.
- * If this process fails the user is presented with a modal login dialog.
+ * If this process fails, it calls the `rdioAuthorizationFailed:` method of the RdioDelegate passed to `initWithConsumerKey:`.
+ * Calling this method is the same as calling `authorizeUsingAccessToken:fromController:` with the controller set to `nil`.
  * @param accessToken A token received from a previous <code>rdioDidAuthorizeUser:withAccessToken:</code> delegate call
- * @param currentController Controller from which a login view might be launched
  */
-- (void)authorizeUsingAccessToken:(NSString *)accessToken 
-                   fromController:(UIViewController *)currentController;
+- (void)authorizeUsingAccessToken:(NSString *)accessToken;
+
+/**
+ * Attempts to reauthorize using an access token from a previous session.
+ *
+ * @deprecated You should use `authorizeUsingAccessToken:` in new apps, and explicitly call `authorizeFromController:` on failure if that's your desired behavior.
+ *
+ * If this process fails and the `currentController` is not nil, the user is presented with a modal login view as
+ * if you had called `authorizeFromController:`
+ * If `currentController` is nil, this method behaves the same way as `authorizeUsingAccessToken:`.
+ */
+- (void)authorizeUsingAccessToken:(NSString *)accessToken fromController:(UIViewController *)currentController;
 
 /**
  * Logs out the current user.  Calls <code>rdioDidLogout</code> on delegate on completion.  Clients are responsible
@@ -85,7 +95,10 @@
 /**
  * Calls an Rdio Web Service API method with the given parameters.
  * @param method Name of the method to call. See http://developer.rdio.com/docs/read/rest/Methods for available methods.
- * @param params A dictionary of parameters as required for the method
+ * @param params A dictionary of parameters as required for the method. Note that all keys and values in the `parameters` dictionary should be instances of NSString.
+ * For example, if you're
+ * passing the `count` parameter to an API call, you would use `@"count": @"20"`
+ * instead of `@"count": @20`.
  * @param delegate An object implementing the RDAPIRequestDelegate protocol or an instance of the RDAPIRequestDelegate class, to be notified on request complete.
  */
 - (RDAPIRequest *)callAPIMethod:(NSString *)method 
@@ -126,8 +139,18 @@
 - (void)rdioDidAuthorizeUser:(NSDictionary *)user withAccessToken:(NSString *)accessToken;
 
 /**
- * Called if authorization cannot be completed due to network or server problems.
- * The user will be notified from the login view before this method is called.
+ * Called if authorization cannot be completed due to network, server, or token problems.
+ *
+ * If you used `authorizeFromController` to inititate authorization, the user will be notified from the
+ * login view before this method is called.
+ *
+ * If you called `authorizeUsingAccessToken:fromController:` with a non-nil fromController, the SDK will
+ * respond to an error by popping up the login view without calling this method.  Subsequent failures within
+ * the same flow will be handled as if you had called `authorizeFromController`.
+ *
+ * If you called `authorizeUsingAccessToken:` or provided a nil fromController, this method will be called
+ * without any notification to the end user.  In this circumstance, it's up to you to handle any changes
+ * this might imply for your UI.
  * @param error A message describing what went wrong.
  */
 - (void)rdioAuthorizationFailed:(NSString *)error;

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A401F6A17287BD70012F74E /* Rdio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A401F6917287BD70012F74E /* Rdio.framework */; };
 		1D3623260D0F684500981E51 /* HelloAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* HelloAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -17,12 +18,12 @@
 		3C4AE62813FF3B99003C118B /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4AE62713FF3B99003C118B /* CFNetwork.framework */; };
 		3C4AE62C13FF40D8003C118B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4AE62B13FF40D8003C118B /* SystemConfiguration.framework */; };
 		3C4AE63013FF40E4003C118B /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4AE62F13FF40E4003C118B /* Security.framework */; };
-		3C4AE65913FF424A003C118B /* Rdio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C4AE65813FF424A003C118B /* Rdio.framework */; };
 		3C4AE6CF13FF4E6D003C118B /* HelloViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C4AE6CE13FF4E6D003C118B /* HelloViewController.m */; };
 		3C7DEC6D142178F50033BD61 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C7DEC6C142178F50033BD61 /* Icon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A401F6917287BD70012F74E /* Rdio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rdio.framework; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* HelloAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* HelloAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloAppDelegate.m; sourceTree = "<group>"; };
@@ -36,7 +37,6 @@
 		3C4AE62713FF3B99003C118B /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		3C4AE62B13FF40D8003C118B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		3C4AE62F13FF40E4003C118B /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		3C4AE65813FF424A003C118B /* Rdio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rdio.framework; sourceTree = "<group>"; };
 		3C4AE65E13FF42D7003C118B /* ConsumerCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsumerCredentials.h; sourceTree = "<group>"; };
 		3C4AE66113FF432A003C118B /* ConsumerCredentials_EXAMPLE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsumerCredentials_EXAMPLE.h; sourceTree = "<group>"; };
 		3C4AE6CD13FF4E6D003C118B /* HelloViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloViewController.h; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 				3C4AE62813FF3B99003C118B /* CFNetwork.framework in Frameworks */,
 				3C4AE62C13FF40D8003C118B /* SystemConfiguration.framework in Frameworks */,
 				3C4AE63013FF40E4003C118B /* Security.framework in Frameworks */,
-				3C4AE65913FF424A003C118B /* Rdio.framework in Frameworks */,
+				0A401F6A17287BD70012F74E /* Rdio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,7 +119,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3C4AE65813FF424A003C118B /* Rdio.framework */,
+				0A401F6917287BD70012F74E /* Rdio.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,
