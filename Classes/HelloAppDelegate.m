@@ -36,9 +36,10 @@ static HelloAppDelegate *launchedDelegate;
 
 - (void)dealloc
 {
-    if(launchedDelegate == self)
+    if (launchedDelegate == self) {
         launchedDelegate = nil;
-    
+    }
+
     rdio.delegate = nil;
     rdio.player.delegate = nil;
     [rdio release];
