@@ -1,7 +1,7 @@
-/*
- *  Rdio.h
+/**
+ *  @file Rdio.h
  *  Rdio iOS SDK
- *  Copyright 2011 Rdio Inc. All rights reserved.
+ *  Copyright 2011-2013 Rdio Inc. All rights reserved.
  */
 
 #import "RDPlayer.h"
@@ -20,10 +20,19 @@
  * To get started:
  * <ul>
  *  <li>Visit http://developer.rdio.com to register a developer account and apply for a key</li>
- *  <li>Try the <a href="http://itunes.apple.com/us/app/music-quiz-for-rdio/id434015378">sample app</a> and get the source from https://github.com/rdio/rdioquiz-ios</li>
+ *  <li>Download the <a href="https://github.com/rdio/rdioquiz-ios">sample app</a></li>
  *  <li>Download the <a href="http://www.rdio.com/media/static/developer/ios/rdio-ios.tar.gz">framework</a></li>
  *  <li>Drag the Rdio framework into your XCode project</li>
- *  <li><b>Add CoreGraphics.framework, CFNetwork.framework, SystemConfiguration.framework, AudioToolbox.framework and Security.framework</b></li>
+ *  <li><b>Add the following frameworks to your project:</b>
+ *    <ul>
+ *      <li>CoreGraphics</li>
+ *      <li>CFNetwork</li>
+ *      <li>CoreMedia</li>
+ *      <li>SystemConfiguration</li>
+ *      <li>AudioToolbox</li>
+ *      <li>Security</li>
+ *    </ul>
+ *  </li>
  *  <li><b>Add <a href="http://developer.apple.com/library/mac/#qa/qa1490/_index.html">-all_load</a> under Other Linker Flags in the project build info</b></li>
  *  <li>Try the following code in your app delegate:</li>
  * </ul>
@@ -33,8 +42,8 @@
  *   [rdio.player playSource:@"t2742133"];
  * \endcode
  *
- * This is a beta release. Please direct feature requests and bug reports to 
- * <a href="http://twitter.com/rdioapi">\@RdioAPI</a> or the 
+ * Please direct feature requests and bug reports to
+ * <a href="mailto:developersupport@rd.io">Developer Support</a> or the
  * <a href="http://groups.google.com/group/rdio-api">Rdio API Google Group</a>.
  */
 
@@ -50,6 +59,7 @@
   RDAuthViewController *authViewController_;
   UIViewController *currentController_;
   id<RdioDelegate> delegate_;
+  BOOL authorizingFromToken_;
 }
 
 /**
@@ -151,7 +161,7 @@
  * If you called `authorizeUsingAccessToken:` or provided a nil fromController, this method will be called
  * without any notification to the end user.  In this circumstance, it's up to you to handle any changes
  * this might imply for your UI.
- * @param error A message describing what went wrong.
+ * @param error A description of what went wrong.
  */
 - (void)rdioAuthorizationFailed:(NSString *)error;
 
