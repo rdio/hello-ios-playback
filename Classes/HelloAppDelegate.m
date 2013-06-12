@@ -17,7 +17,7 @@ static HelloAppDelegate *launchedDelegate;
 
 + (Rdio *)rdioInstance
 {
-    return instance.rdio;
+    return launchedDelegate.rdio;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
