@@ -9,16 +9,21 @@
 #import "HelloAppDelegate.h"
 #import "ConsumerCredentials.h"
 
+static HelloAppDelegate *launchedDelegate;
+
 @implementation HelloAppDelegate
 
 @synthesize window, viewController, rdio;
 
-+(Rdio *)rdioInstance
++ (Rdio *)rdioInstance
 {
-    return [(id)[[UIApplication sharedApplication] delegate] rdio];
+    return instance.rdio;
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    launchedDelegate = self;
+    
     rdio = [[Rdio alloc] initWithConsumerKey:CONSUMER_KEY andSecret:CONSUMER_SECRET delegate:viewController];
     [[rdio player] setDelegate:viewController];
 
@@ -29,10 +34,14 @@
     return YES;
 }
 
-
-
-
-- (void)dealloc {
+- (void)dealloc
+{
+    if(launchedDelegate == self)
+        launchedDelegate = nil;
+    
+    rdio.delegate = nil;
+    rdio.player.delegate = nil;
+    [rdio release];
     [window release];
     [super dealloc];
 }
