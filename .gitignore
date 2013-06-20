@@ -1,6 +1,8 @@
 build
 Hello.xcodeproj/*.mode1v3
 Hello.xcodeproj/*.pbxuser
+Hello.xcodeproj/project.xcworkspace
+Hello.xcodeproj/xcuserdata/
 ConsumerCredentials.h
 .*.swp
 .DS_Store
