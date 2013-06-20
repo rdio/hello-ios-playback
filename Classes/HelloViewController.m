@@ -1,23 +1,91 @@
 #import "HelloViewController.h"
 #import "HelloAppDelegate.h"
 
-@implementation HelloViewController
-
-@synthesize playButton, loginButton, player;
-
--(RDPlayer*)getPlayer
-{
-    if (player == nil) {
-        player = [HelloAppDelegate rdioInstance].player;
-    }
-    return player;
+@interface HelloViewController() {
+    UIButton *_playButton;
+    UIButton *_loginButton;
+    BOOL _loggedIn;
+    BOOL _playing;
+    BOOL _paused;
+    RDPlayer* _player;
 }
 
-#pragma mark -
-#pragma mark UI event and state handling
+@end
 
-- (IBAction) playClicked:(id) button {
-    if (!playing) {
+@implementation HelloViewController
+
+@synthesize player;
+
+#pragma mark - View Lifecycle
+- (void)loadView
+{
+    CGRect appFrame = [UIScreen mainScreen].applicationFrame;
+    UIView *view = [[UIView alloc] initWithFrame:appFrame];
+    [view setBackgroundColor:[UIColor whiteColor]];
+
+    // Play Button
+    _playButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_playButton setTitle:@"Play" forState:UIControlStateNormal];
+    CGRect playFrame = CGRectMake(20, 20, appFrame.size.width - 40, 40);
+    [_playButton setFrame:playFrame];
+    [_playButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+    [_playButton addTarget:self action:@selector(playClicked) forControlEvents:UIControlEventTouchUpInside];
+
+    _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [_loginButton setTitle:@"Log In" forState:UIControlStateNormal];
+    CGRect loginFrame = CGRectMake(20, 70, appFrame.size.width - 40, 40);
+    [_loginButton setFrame:loginFrame];
+    [_loginButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+    [_loginButton addTarget:self action:@selector(loginClicked) forControlEvents:UIControlEventTouchUpInside];
+
+    CGRect labelFrame = CGRectMake(20, 120, appFrame.size.width - 40, 40);
+    UILabel *rdioLabel = [[UILabel alloc] initWithFrame:labelFrame];
+    [rdioLabel setText:@"Powered by Rdio®"];
+    [rdioLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+    [rdioLabel setTextAlignment:NSTextAlignmentCenter];
+
+    [view addSubview:_playButton];
+    [view addSubview:_loginButton];
+    [view addSubview:rdioLabel];
+
+    [rdioLabel release];
+
+    self.view = view;
+    [view release];
+}
+
+- (void)dealloc
+{
+    [_playButton release];
+    [_loginButton release];
+
+    [super dealloc];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    Rdio *sharedRdio = [HelloAppDelegate rdioInstance];
+    sharedRdio.delegate = self;
+    sharedRdio.player.delegate = self;
+}
+
+#pragma mark - Rdio Helper
+
+- (RDPlayer*)getPlayer
+{
+  if (_player == nil) {
+    _player = [HelloAppDelegate rdioInstance].player;
+  }
+  return _player;
+}
+
+#pragma mark - UI event and state handling
+
+- (void)playClicked
+{
+    if (!_playing) {
         NSArray* keys = [@"t2742133,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
         [[self getPlayer] playSources:keys];
     } else {
@@ -25,59 +93,65 @@
     }
 }
 
-- (IBAction) loginClicked:(id) button {
-    if (loggedIn) {
+- (void)loginClicked
+{
+    if (_loggedIn) {
         [[HelloAppDelegate rdioInstance] logout];
     } else {
         [[HelloAppDelegate rdioInstance] authorizeFromController:self];
     }
 }
 
-- (void) setLoggedIn:(BOOL)logged_in {
-    loggedIn = logged_in;
+- (void)setLoggedIn:(BOOL)logged_in
+{
+    _loggedIn = logged_in;
     if (logged_in) {
-        [loginButton setTitle:@"Log Out" forState: UIControlStateNormal];
+        [_loginButton setTitle:@"Log Out" forState: UIControlStateNormal];
     } else {
-        [loginButton setTitle:@"Log In" forState: UIControlStateNormal];
+        [_loginButton setTitle:@"Log In" forState: UIControlStateNormal];
     }
 }
 
 
-#pragma mark -
-#pragma mark RdioDelegate
+#pragma mark - RdioDelegate
 
-- (void) rdioDidAuthorizeUser:(NSDictionary *)user withAccessToken:(NSString *)accessToken {
+- (void)rdioDidAuthorizeUser:(NSDictionary *)user withAccessToken:(NSString *)accessToken
+{
     [self setLoggedIn:YES];
 }
 
-- (void) rdioAuthorizationFailed:(NSString *)error {
+- (void)rdioAuthorizationFailed:(NSString *)error
+{
     [self setLoggedIn:NO];
 }
 
-- (void) rdioAuthorizationCancelled {
+- (void)rdioAuthorizationCancelled
+{
     [self setLoggedIn:NO];
 }
 
-- (void) rdioDidLogout {
+- (void)rdioDidLogout
+{
     [self setLoggedIn:NO];
 }
 
 
-#pragma mark -
-#pragma mark RDPlayerDelegate
+#pragma mark - RDPlayerDelegate
 
-- (BOOL) rdioIsPlayingElsewhere {
+- (BOOL)rdioIsPlayingElsewhere
+{
     // let the Rdio framework tell the user.
     return NO;
 }
 
-- (void) rdioPlayerChangedFromState:(RDPlayerState)fromState toState:(RDPlayerState)state {
-    playing = (state != RDPlayerStateInitializing && state != RDPlayerStateStopped);
-    paused = (state == RDPlayerStatePaused);
-    if (paused || !playing) {
-        [playButton setTitle:@"Play" forState:UIControlStateNormal];
+- (void)rdioPlayerChangedFromState:(RDPlayerState)fromState toState:(RDPlayerState)state
+{
+    _playing = (state != RDPlayerStateInitializing && state != RDPlayerStateStopped);
+    _paused = (state == RDPlayerStatePaused);
+    if (_paused || !_playing) {
+        [_playButton setTitle:@"Play" forState:UIControlStateNormal];
     } else {
-        [playButton setTitle:@"Pause" forState:UIControlStateNormal];
+        [_playButton setTitle:@"Pause" forState:UIControlStateNormal];
     }
 }
 
