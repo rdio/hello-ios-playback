@@ -23,12 +23,13 @@ static HelloAppDelegate *launchedDelegate;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     launchedDelegate = self;
-    
-    rdio = [[Rdio alloc] initWithConsumerKey:CONSUMER_KEY andSecret:CONSUMER_SECRET delegate:viewController];
-    [[rdio player] setDelegate:viewController];
 
-    // Add the view controller's view to the window and display.
-    [self.window addSubview:viewController.view];
+    rdio = [[Rdio alloc] initWithConsumerKey:CONSUMER_KEY andSecret:CONSUMER_SECRET delegate:nil];
+
+    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.viewController = [[HelloViewController alloc] init];
+
+    self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
 
     return YES;
