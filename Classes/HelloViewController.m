@@ -71,6 +71,22 @@
     sharedRdio.player.delegate = self;
 }
 
+#pragma mark - Screen Rotation
+- (BOOL)shouldAutorotate
+{
+  return YES;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+  return YES;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+  return UIInterfaceOrientationMaskAll;
+}
+
 #pragma mark - Rdio Helper
 
 - (RDPlayer*)getPlayer
