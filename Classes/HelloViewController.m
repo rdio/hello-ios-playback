@@ -27,26 +27,23 @@
 
     id _timeObserver;
     id _levelObserver;
-    double currentTrackDuration;
+    double _currentTrackDuration;
 }
-
 
 @end
 
 @implementation HelloViewController
 
-@synthesize player;
-
-#pragma mark - Rdio Helper
-
-- (RDPlayer*)getPlayer
-{
-  if (_player == nil) {
-    _player = [HelloAppDelegate rdioInstance].player;
-  }
-  return _player;
+- (RDPlayer *)player {
+    if (_player == nil) {
+        Rdio *sharedRdio = [HelloAppDelegate rdioInstance];
+        if (sharedRdio.player == nil) {
+            [sharedRdio initPlayerWithDelegate:self];
+        }
+        _player = sharedRdio.player;
+    }
+    return _player;
 }
-
 
 #pragma mark - View Lifecycle
 - (void)loadView
@@ -58,10 +55,12 @@
     // Play button
     _playButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [_playButton setTitle:@"Play" forState:UIControlStateNormal];
-    CGRect playFrame = CGRectMake(20, 20, appFrame.size.width - 40, 40);
+    CGRect playFrame = CGRectMake(105, 20, 110, 40);
     [_playButton setFrame:playFrame];
     [_playButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [_playButton addTarget:self action:@selector(playClicked) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:_playButton];
+    [_playButton release];
 
     // Login button
     _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -70,53 +69,104 @@
     [_loginButton setFrame:loginFrame];
     [_loginButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [_loginButton addTarget:self action:@selector(loginClicked) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:_loginButton];
+    [_loginButton release];
 
     // Powered by Rdio label
-    CGRect labelFrame = CGRectMake(20, 120, appFrame.size.width - 40, 40);
+    CGRect labelFrame = CGRectMake(20, 110, appFrame.size.width - 40, 40);
     UILabel *rdioLabel = [[UILabel alloc] initWithFrame:labelFrame];
     [rdioLabel setText:@"Powered by Rdio®"];
     [rdioLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [rdioLabel setTextAlignment:NSTextAlignmentCenter];
-  
-  // Next track button
-  
-  // Previous track button
-  
-  // Left level
-  
-  // Right level
-  
-  // Current track title
-  
-  // Current artist
-  
-  // Position label
-  
-  // Duration label
-  
-  // Position slider
-  
-
-    [view addSubview:_playButton];
-    [view addSubview:_loginButton];
     [view addSubview:rdioLabel];
-
-    [_playButton release];
-    [_loginButton release];
-
     [rdioLabel release];
 
-    self.view = view;
-    [view release];
-}
+    // Previous track button
+    UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [prevButton setTitle:@"Prev" forState:UIControlStateNormal];
+    CGRect prevFrame = CGRectMake(20, 20, 77, 40);
+    [prevButton setFrame:prevFrame];
+    [prevButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+    [prevButton addTarget:self action:@selector(previousClicked) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:prevButton];
+    [prevButton release];
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+    // Next track button
+    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [nextButton setTitle:@"Next" forState:UIControlStateNormal];
+    CGRect nextFrame = CGRectMake(223, 20, 77, 40);
+    [nextButton setFrame:nextFrame];
+    [nextButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+    [nextButton addTarget:self action:@selector(nextClicked) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:nextButton];
+    [nextButton release];
+
+    // Left level label
+    CGRect leftLevelLabelFrame = CGRectMake(20, 151, 15, 21);
+    UILabel *leftLevelLabel = [[UILabel alloc] initWithFrame:leftLevelLabelFrame];
+    [leftLevelLabel setText:@"L"];
+    [view addSubview:leftLevelLabel];
+    [leftLevelLabel release];
+
+    // Left level
+    CGRect leftSliderFrame = CGRectMake(65, 151, 191, 28);
+    _leftLevelMonitor = [[UISlider alloc] initWithFrame:leftSliderFrame];
+    [_leftLevelMonitor setValue:0.0];
+    [view addSubview:_leftLevelMonitor];
+    [_leftLevelMonitor release];
+
+    // Right level label
+    CGRect rightLevelLabelFrame = CGRectMake(20, 191, 15, 21);
+    UILabel *rightLevelLabel = [[UILabel alloc] initWithFrame:rightLevelLabelFrame];
+    [rightLevelLabel setText:@"R"];
+    [view addSubview:rightLevelLabel];
+    [rightLevelLabel release];
+
+    // Right level
+    CGRect rightSliderFrame = CGRectMake(65, 191, 191, 28);
+    _rightLevelMonitor = [[UISlider alloc] initWithFrame:rightSliderFrame];
+    [_rightLevelMonitor setValue:0.0];
+    [view addSubview:_rightLevelMonitor];
+    [_rightLevelMonitor release];
+
+    // Current artist label
+    CGRect currentArtistFrame = CGRectMake(20, 258, 280, 25);
+    _currentArtistLabel = [[UILabel alloc] initWithFrame:currentArtistFrame];
+    [view addSubview:_currentArtistLabel];
+    [_currentArtistLabel release];
+
+    // Current track title
+    CGRect currentTrackFrame = CGRectMake(20, 316, 280, 25);
+    _currentTrackLabel = [[UILabel alloc] initWithFrame:currentTrackFrame];
+    [view addSubview:_currentTrackLabel];
+    [_currentTrackLabel release];
+
+    // Position label
+    CGRect posLabelFrame = CGRectMake(20, 287, 37, 21);
+    _positionLabel = [[UILabel alloc] initWithFrame:posLabelFrame];
+    [view addSubview:_positionLabel];
+    [_positionLabel release];
+
+    // Duration label
+    CGRect durLabelFrame = CGRectMake(264, 287, 37, 21);
+    _durationLabel = [[UILabel alloc] initWithFrame:durLabelFrame];
+    [view addSubview:_durationLabel];
+    [_durationLabel release];
+
+    // Position slider
+    CGRect posSliderFrame = CGRectMake(65, 287, 191, 28);
+    _positionSlider = [[UISlider alloc] initWithFrame:posSliderFrame];
+    [_positionSlider addTarget:self action:@selector(seekStarted) forControlEvents:UIControlEventTouchDown];
+    [_positionSlider addTarget:self action:@selector(seekFinished) forControlEvents:UIControlEventTouchUpInside];
+    [_positionSlider addTarget:self action:@selector(seekFinished) forControlEvents:UIControlEventTouchUpOutside];
+    [view addSubview:_positionSlider];
+    [_positionSlider release];
 
     Rdio *sharedRdio = [HelloAppDelegate rdioInstance];
     sharedRdio.delegate = self;
-    [sharedRdio initPlayerWithDelegate:self];
+
+    self.view = view;
+    [view release];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -205,7 +255,7 @@
 {
     if (!_seeking) {
         _positionLabel.text = [self formattedTimeForInterval:seconds];
-        _positionSlider.value = seconds / currentTrackDuration;
+        _positionSlider.value = seconds / _currentTrackDuration;
     }
 }
 
@@ -237,8 +287,8 @@
             }
         } else if ([@"duration" isEqualToString:keyPath]) {
             NSNumber *duration = [change valueForKey:NSKeyValueChangeNewKey];
-            currentTrackDuration = [duration doubleValue];
-            _durationLabel.text = [self formattedTimeForInterval:currentTrackDuration];
+            _currentTrackDuration = [duration doubleValue];
+            _durationLabel.text = [self formattedTimeForInterval:_currentTrackDuration];
         }
     }
 }
@@ -263,10 +313,10 @@
 {
     if (!_playing) {
         NSArray* keys = [@"t15907959,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
-        [[self getPlayer] playSources:keys];
+        [self.player playSources:keys];
         [self startObservers];
     } else {
-        [[self getPlayer] togglePause];
+        [self.player togglePause];
         [self stopObservers];
     }
 }
@@ -310,8 +360,11 @@
 
     _seeking = NO;
 
-    NSTimeInterval position = _positionSlider.value * currentTrackDuration;
-    [self.player seekToPosition:position];
+    NSTimeInterval position = _positionSlider.value * _currentTrackDuration;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [self.player seekToPosition:position];
+    });
 }
 
 
