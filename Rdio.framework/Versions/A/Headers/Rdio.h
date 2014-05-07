@@ -6,6 +6,7 @@
 
 #import "RDPlayer.h"
 #import "RDAPIRequest.h"
+#import "RDError.h"
 
 @protocol RdioDelegate;
 @class RDSession;
@@ -19,7 +20,7 @@
  * <br/><br/>
  * To get started:
  * <ul>
- *  <li>Visit http://developer.rdio.com to register a developer account and apply for a key</li>
+ *  <li>Visit http://www.rdio.com/developers/ to register a developer account and apply for a key</li>
  *  <li>Download the <a href="https://github.com/rdio/rdioquiz-ios">sample app</a></li>
  *  <li>Download the <a href="http://www.rdio.com/media/static/developer/ios/rdio-ios.tar.gz">framework</a></li>
  *  <li>Drag the Rdio framework into your XCode project</li>
@@ -64,12 +65,26 @@
 
 /**
  * Initializes the Rdio API with your consumer key and secret.
- * Visit http://developer.rdio.com/ to register and apply for a key.
+ * Visit http://www.rdio.com/developers/ to register and apply for a key.
  * @param key Your consumer key
  * @param secret Your secret
  * @param delegate Delegate for receiving state changes, or nil
  */
 - (id)initWithConsumerKey:(NSString *)key andSecret:(NSString *)secret delegate:(id<RdioDelegate>)delegate;
+
+/**
+ * Fetches a playback token and initializes the Rdio player.
+ * You'll need to call this method in order to play music.
+ *
+ * If initialized before authenticating a user, the player will play 30 second samples.
+ * If initialized after, the player will play tracks according to the user's subscription.
+ * Authenticating a user after the player has been initialized will automatically
+ * reinitialize the player so that it plays tracks according to the user's subscription.
+ *
+ * The instance of RDPlayer returned by this method is also accessible via `rdio.player`.
+ * @param delegate An object that implements the RDPlayerDelegate protocol, which will be set as the player's delegate.
+ */
+- (RDPlayer *)initPlayerWithDelegate:(id<RDPlayerDelegate>)delegate;
 
 /**
  * Presents a modal login dialog and attempts to get an authorized Rdio user.
@@ -86,17 +101,6 @@
 - (void)authorizeUsingAccessToken:(NSString *)accessToken;
 
 /**
- * Attempts to reauthorize using an access token from a previous session.
- *
- * @deprecated You should use `authorizeUsingAccessToken:` in new apps, and explicitly call `authorizeFromController:` on failure if that's your desired behavior.
- *
- * If this process fails and the `currentController` is not nil, the user is presented with a modal login view as
- * if you had called `authorizeFromController:`
- * If `currentController` is nil, this method behaves the same way as `authorizeUsingAccessToken:`.
- */
-- (void)authorizeUsingAccessToken:(NSString *)accessToken fromController:(UIViewController *)currentController;
-
-/**
  * Logs out the current user.  Calls <code>rdioDidLogout</code> on delegate on completion.  Clients are responsible
  * for clearing any application-persisted state (user data, access token, etc).
  */
@@ -104,7 +108,7 @@
 
 /**
  * Calls an Rdio Web Service API method with the given parameters.
- * @param method Name of the method to call. See http://developer.rdio.com/docs/read/rest/Methods for available methods.
+ * @param method Name of the method to call. See http://www.rdio.com/developers/docs/web-service/methods/ for available methods.
  * @param params A dictionary of parameters as required for the method. Note that all keys and values in the `parameters` dictionary should be instances of NSString.
  * For example, if you're
  * passing the `count` parameter to an API call, you would use `@"count": @"20"`
@@ -122,12 +126,14 @@
 
 /**
  * A dictionary describing the current user, or nil if no user is logged in.
- * See http://developer.rdio.com/docs/read/rest/types
+ * See http://www.rdio.com/developers/docs/web-service/types/
  */
 @property (nonatomic, readonly) NSDictionary *user;
 
 /**
- * The playback interface.
+ * The Rdio player object.
+ *
+ * Note that the player will be nil until you call `initPlayerWithDelegate:`.
  */
 @property (nonatomic, readonly) RDPlayer *player;
 
@@ -142,8 +148,8 @@
 @optional
 
 /**
- * Called when an authorize request finishes successfully. 
- * @param user A dictionary containing information about the user that was authorized. See http://developer.rdio.com/docs/read/rest/types
+ * Called when an authorize request finishes successfully.
+ * @param user A dictionary containing information about the user that was authorized. See http://www.rdio.com/developers/docs/web-service/types/
  * @param accessToken A token that can be used to automatically reauthorize the current user in subsequent sessions
  */
 - (void)rdioDidAuthorizeUser:(NSDictionary *)user withAccessToken:(NSString *)accessToken;
@@ -161,9 +167,9 @@
  * If you called `authorizeUsingAccessToken:` or provided a nil fromController, this method will be called
  * without any notification to the end user.  In this circumstance, it's up to you to handle any changes
  * this might imply for your UI.
- * @param error A description of what went wrong.
+ * @param error An NSError containing a description of what went wrong.
  */
-- (void)rdioAuthorizationFailed:(NSString *)error;
+- (void)rdioAuthorizationFailed:(NSError *)error;
 
 /**
  * Called if the user aborts the authorization process.

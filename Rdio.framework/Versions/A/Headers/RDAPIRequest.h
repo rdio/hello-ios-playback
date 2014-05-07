@@ -1,7 +1,7 @@
-/*
- *  RDAPIRequest.h
+/**
+ *  @file RDAPIRequest.h
  *  Rdio Web Service API Requests
- *  Copyright 2011 Rdio Inc. All rights reserved.
+ *  Copyright 2011-2013 Rdio Inc. All rights reserved.
  */
 
 #import <Foundation/Foundation.h>

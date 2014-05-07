@@ -68,7 +68,7 @@
 
     Rdio *sharedRdio = [HelloAppDelegate rdioInstance];
     sharedRdio.delegate = self;
-    sharedRdio.player.delegate = self;
+    [sharedRdio initPlayerWithDelegate:self];
 }
 
 #pragma mark - Screen Rotation
@@ -136,7 +136,7 @@
     [self setLoggedIn:YES];
 }
 
-- (void)rdioAuthorizationFailed:(NSString *)error
+- (void)rdioAuthorizationFailed:(NSError *)error
 {
     [self setLoggedIn:NO];
 }
