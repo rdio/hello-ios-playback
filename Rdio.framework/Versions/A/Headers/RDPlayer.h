@@ -1,10 +1,12 @@
 /**
  *  @file RDPlayer.h
  *  Rdio Playback Interface
- *  Copyright 2011 Rdio Inc. All rights reserved.
+ *  Copyright 2011-2013 Rdio Inc. All rights reserved.
  */
 
 #import <UIKit/UIKit.h>
+#import <CoreMedia/CoreMedia.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -17,6 +19,12 @@ typedef enum {
   RDPlayerStatePlaying, /**< Currently playing (or buffering) */
   RDPlayerStateStopped /**< Playback is stopped */
 } RDPlayerState;
+
+
+typedef enum {
+  RDAutoSkipNext = 0,
+  RDAutoSkipPrevious
+} RDAutoSkipDirection;
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -54,7 +62,7 @@ typedef enum {
  *
  * @return <code>YES</code> if you want to override this behavior.
  */
-- (BOOL)rdioPlayerCouldNotStreamTrack:(NSString *)trackKey;
+- (BOOL)rdioPlayerFailedDuringTrack:(NSString *)trackKey withError:(NSError *)error;
 
 @end
 
@@ -80,15 +88,22 @@ typedef enum {
 @private
   RDPlayerState state_;
   double position_;
-  
+  double duration_;
+  double pendingSeek_;
+
   RDSession *session_;
   
   int currentTrackIndex_;
   NSString *currentTrack_;
   AudioStreamer *audioStream_;
   
+  int nextTrackIndex_;
   NSString *nextTrack_;
   AudioStreamer *nextAudioStream_;
+
+  // Unstreamable tracks are automatically skipped. In order to make sure `previous` still
+  // works when the previous track is unstreamable, we need to keep track of the skip direction.
+  RDAutoSkipDirection autoSkipDirection_;
   
   RDUserEventLog *log_;
   
@@ -219,6 +234,51 @@ typedef enum {
  * Stops playback, releases resources and resets the queue.
  */
 - (void)resetQueue;
+
+/**
+ * Analagous to AVPlayer's method of the same name.
+ * See https://developer.apple.com/library/mac/#documentation/AVFoundation/Reference/AVPlayer_Class/Reference/Reference.html#//apple_ref/doc/uid/TP40009530-CH1-SW7 for details.
+ *
+ * @param interval The interval of invocation of the block during normal playback, according to progress of the current time of the player.
+ * @param queue A serial queue onto which block should be enqueued.
+ * @param block
+ * The block to be invoked periodically.
+ * The block takes a single parameter:
+ *   time
+ *     The time at which the block is invoked.
+ */
+- (id)addPeriodicTimeObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(CMTime time) )block;
+
+/**
+ * Analagous to AVPlayer's method of the same name.
+ *
+ * Remove a time observer added by addPeriodicTimeObserverForInterval.
+ *
+ * @param observer The opaque object returned by addPeriodicTimeObserverForInterval.
+ */
+- (void)removeTimeObserver:(id)observer;
+
+/**
+ * Similar to -addPeriodicTimeObserverForInterval:, this method calls back the passed in block with updated audio power levels.
+ *
+ * @param interval The interval of invocation of the block during normal playback, according to progress of the current time of the player.
+ * @param queue A serial queue onto which block should be enqueued.
+ * @param block
+ * The block to be invoked periodically.
+ * The block takes two parameters:
+ *   left
+ *     The left channel's SPL in dB
+ *   right
+ *     The right channel's SPL in dB
+ */
+- (id)addPeriodicLevelObserverForInterval:(CMTime)interval queue:(dispatch_queue_t)queue usingBlock:(void (^)(Float32 left, Float32 right))block;
+
+/**
+ * Remove a level observer added by addPeriodicLevelObserverForInterval.
+ *
+ * @param observer The opaque object returned by addPeriodicLevelObserverForInterval.
+ */
+- (void)removeLevelObserver:(id)observer;
 
 /**
  * Current playback state.
