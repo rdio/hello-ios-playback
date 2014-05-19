@@ -3,6 +3,6 @@
 
 @interface HelloViewController : UIViewController<RdioDelegate,RDPlayerDelegate>
 
-@property (readonly, nonatomic) RDPlayer *player;
+@property (readonly, nonatomic, weak) RDPlayer *player;
 
 @end

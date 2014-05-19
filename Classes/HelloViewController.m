@@ -60,7 +60,6 @@
     [_playButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [_playButton addTarget:self action:@selector(playClicked) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:_playButton];
-    [_playButton release];
 
     // Login button
     _loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -70,7 +69,6 @@
     [_loginButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [_loginButton addTarget:self action:@selector(loginClicked) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:_loginButton];
-    [_loginButton release];
 
     // Powered by Rdio label
     CGRect labelFrame = CGRectMake(20, 110, appFrame.size.width - 40, 40);
@@ -79,7 +77,6 @@
     [rdioLabel setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [rdioLabel setTextAlignment:NSTextAlignmentCenter];
     [view addSubview:rdioLabel];
-    [rdioLabel release];
 
     // Previous track button
     UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -89,7 +86,6 @@
     [prevButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [prevButton addTarget:self action:@selector(previousClicked) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:prevButton];
-    [prevButton release];
 
     // Next track button
     UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -99,59 +95,50 @@
     [nextButton setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [nextButton addTarget:self action:@selector(nextClicked) forControlEvents:UIControlEventTouchUpInside];
     [view addSubview:nextButton];
-    [nextButton release];
 
     // Left level label
     CGRect leftLevelLabelFrame = CGRectMake(20, 151, 15, 21);
     UILabel *leftLevelLabel = [[UILabel alloc] initWithFrame:leftLevelLabelFrame];
     [leftLevelLabel setText:@"L"];
     [view addSubview:leftLevelLabel];
-    [leftLevelLabel release];
 
     // Left level
     CGRect leftSliderFrame = CGRectMake(65, 151, 191, 28);
     _leftLevelMonitor = [[UISlider alloc] initWithFrame:leftSliderFrame];
     [_leftLevelMonitor setValue:0.0];
     [view addSubview:_leftLevelMonitor];
-    [_leftLevelMonitor release];
 
     // Right level label
     CGRect rightLevelLabelFrame = CGRectMake(20, 191, 15, 21);
     UILabel *rightLevelLabel = [[UILabel alloc] initWithFrame:rightLevelLabelFrame];
     [rightLevelLabel setText:@"R"];
     [view addSubview:rightLevelLabel];
-    [rightLevelLabel release];
 
     // Right level
     CGRect rightSliderFrame = CGRectMake(65, 191, 191, 28);
     _rightLevelMonitor = [[UISlider alloc] initWithFrame:rightSliderFrame];
     [_rightLevelMonitor setValue:0.0];
     [view addSubview:_rightLevelMonitor];
-    [_rightLevelMonitor release];
 
     // Current artist label
     CGRect currentArtistFrame = CGRectMake(20, 258, 280, 25);
     _currentArtistLabel = [[UILabel alloc] initWithFrame:currentArtistFrame];
     [view addSubview:_currentArtistLabel];
-    [_currentArtistLabel release];
 
     // Current track title
     CGRect currentTrackFrame = CGRectMake(20, 316, 280, 25);
     _currentTrackLabel = [[UILabel alloc] initWithFrame:currentTrackFrame];
     [view addSubview:_currentTrackLabel];
-    [_currentTrackLabel release];
 
     // Position label
     CGRect posLabelFrame = CGRectMake(20, 287, 37, 21);
     _positionLabel = [[UILabel alloc] initWithFrame:posLabelFrame];
     [view addSubview:_positionLabel];
-    [_positionLabel release];
 
     // Duration label
     CGRect durLabelFrame = CGRectMake(264, 287, 37, 21);
     _durationLabel = [[UILabel alloc] initWithFrame:durLabelFrame];
     [view addSubview:_durationLabel];
-    [_durationLabel release];
 
     // Position slider
     CGRect posSliderFrame = CGRectMake(65, 287, 191, 28);
@@ -160,13 +147,11 @@
     [_positionSlider addTarget:self action:@selector(seekFinished) forControlEvents:UIControlEventTouchUpInside];
     [_positionSlider addTarget:self action:@selector(seekFinished) forControlEvents:UIControlEventTouchUpOutside];
     [view addSubview:_positionSlider];
-    [_positionSlider release];
 
     Rdio *sharedRdio = [HelloAppDelegate rdioInstance];
     sharedRdio.delegate = self;
 
     self.view = view;
-    [view release];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -207,22 +192,22 @@
 - (void)startObservers
 {
     if (!_levelObserver) {
-        _levelObserver = [[self.player addPeriodicLevelObserverForInterval:CMTimeMake(1, 100)
+        _levelObserver = [self.player addPeriodicLevelObserverForInterval:CMTimeMake(1, 100)
                                                                      queue:dispatch_get_main_queue()
                                                                 usingBlock:^(Float32 left, Float32 right) {
                                                                     [self setMonitorValuesForLeft:left andRight:right];
-                                                                }] retain];
+                                                                }];
     }
 
     if (!_timeObserver) {
-        _timeObserver = [[self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 100)
+        _timeObserver = [self.player addPeriodicTimeObserverForInterval:CMTimeMake(1, 100)
                                                                    queue:dispatch_get_main_queue()
                                                               usingBlock:^(CMTime time) {
                                                                   Float64 seconds = CMTimeGetSeconds(time);
                                                                   if (!isnan(seconds) && !isinf(seconds)) {
                                                                       [self positionUpdated:seconds];
                                                                   }
-                                                              }] retain];
+                                                              }];
     }
 }
 
@@ -230,13 +215,11 @@
 {
     if (_levelObserver) {
         [self.player removeLevelObserver:_levelObserver];
-        [_levelObserver release];
         _levelObserver = nil;
     }
 
     if (_timeObserver) {
         [self.player removeTimeObserver:_timeObserver];
-        [_timeObserver release];
         _timeObserver = nil;
     }
 }
