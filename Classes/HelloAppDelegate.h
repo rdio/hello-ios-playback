@@ -14,8 +14,8 @@
 
 + (Rdio *)rdioInstance;
 
-@property (nonatomic, retain) UIWindow *window;
-@property (nonatomic, retain) HelloViewController *viewController;
+@property (nonatomic, strong) UIWindow *window;
+@property (nonatomic, strong) HelloViewController *viewController;
 
 @property (readonly) Rdio *rdio;
 

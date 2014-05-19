@@ -26,7 +26,7 @@ static HelloAppDelegate *launchedDelegate;
 
     rdio = [[Rdio alloc] initWithConsumerKey:CONSUMER_KEY andSecret:CONSUMER_SECRET delegate:nil];
 
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.viewController = [[HelloViewController alloc] init];
 
     self.window.rootViewController = self.viewController;
@@ -43,9 +43,6 @@ static HelloAppDelegate *launchedDelegate;
 
     rdio.delegate = nil;
     rdio.player.delegate = nil;
-    [rdio release];
-    [window release];
-    [super dealloc];
 }
 
 
