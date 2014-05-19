@@ -89,6 +89,7 @@ typedef enum {
   RDPlayerState state_;
   double position_;
   double duration_;
+  double pendingSeek_;
 
   RDSession *session_;
   

@@ -40,6 +40,7 @@
  * \code
  *   #import <Rdio/Rdio.h>
  *   Rdio *rdio = [[Rdio alloc] initWithConsumerKey:@"YOUR KEY" andSecret:@"YOUR SECRET" delegate:nil];
+ *   [rdio preparePlayerWithDelegate:nil];
  *   [rdio.player playSource:@"t2742133"];
  * \endcode
  *
@@ -84,7 +85,7 @@
  * The instance of RDPlayer returned by this method is also accessible via `rdio.player`.
  * @param delegate An object that implements the RDPlayerDelegate protocol, which will be set as the player's delegate.
  */
-- (RDPlayer *)initPlayerWithDelegate:(id<RDPlayerDelegate>)delegate;
+- (RDPlayer *)preparePlayerWithDelegate:(id<RDPlayerDelegate>)delegate;
 
 /**
  * Presents a modal login dialog and attempts to get an authorized Rdio user.
@@ -133,7 +134,7 @@
 /**
  * The Rdio player object.
  *
- * Note that the player will be nil until you call `initPlayerWithDelegate:`.
+ * Note that the player will be nil until you call `preparePlayerWithDelegate:`.
  */
 @property (nonatomic, readonly) RDPlayer *player;
 
@@ -160,14 +161,9 @@
  * If you used `authorizeFromController` to inititate authorization, the user will be notified from the
  * login view before this method is called.
  *
- * If you called `authorizeUsingAccessToken:fromController:` with a non-nil fromController, the SDK will
- * respond to an error by popping up the login view without calling this method.  Subsequent failures within
- * the same flow will be handled as if you had called `authorizeFromController`.
- *
- * If you called `authorizeUsingAccessToken:` or provided a nil fromController, this method will be called
- * without any notification to the end user.  In this circumstance, it's up to you to handle any changes
- * this might imply for your UI.
- * @param error An NSError containing a description of what went wrong.
+ * If you called `authorizeUsingAccessToken:`, this method will be called without any notification to the end user.
+ * In this circumstance, it's up to you to handle any changes this might imply for your UI.
+ * @param error An NSError indicating what went wrong.
  */
 - (void)rdioAuthorizationFailed:(NSError *)error;
 

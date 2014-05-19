@@ -23,9 +23,6 @@ typedef enum {
   RDErrorUnknown,
   RDErrorNetwork,
   RDErrorPlayback,
-  RDErrorPlaybackRegion,
   RDErrorAuth,
-  RDErrorAuthCancelled,
-  RDErrorAuthUserCredentials,
   RDErrorWebService
 } RDErrorCode;

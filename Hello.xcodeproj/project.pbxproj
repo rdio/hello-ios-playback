@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A2A25F719199D9C00CE9A08 /* Rdio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2A25F619199D9C00CE9A08 /* Rdio.framework */; };
 		0A2A25F919199EDA00CE9A08 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A2A25F819199EDA00CE9A08 /* CoreMedia.framework */; };
+		0A9312A2192A7D6D00EAE138 /* Rdio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A9312A1192A7D6D00EAE138 /* Rdio.framework */; };
 		1D3623260D0F684500981E51 /* HelloAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* HelloAppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -23,8 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0A2A25F619199D9C00CE9A08 /* Rdio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rdio.framework; sourceTree = "<group>"; };
 		0A2A25F819199EDA00CE9A08 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		0A9312A1192A7D6D00EAE138 /* Rdio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Rdio.framework; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* HelloAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* HelloAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelloAppDelegate.m; sourceTree = "<group>"; };
@@ -51,8 +51,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				0A2A25F919199EDA00CE9A08 /* CoreMedia.framework in Frameworks */,
-				0A2A25F719199D9C00CE9A08 /* Rdio.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				0A9312A2192A7D6D00EAE138 /* Rdio.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765FD0DF74451002DB57D /* CoreGraphics.framework in Frameworks */,
 				3C4AE62413FF3B92003C118B /* AudioToolbox.framework in Frameworks */,
@@ -119,8 +119,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0A9312A1192A7D6D00EAE138 /* Rdio.framework */,
 				0A2A25F819199EDA00CE9A08 /* CoreMedia.framework */,
-				0A2A25F619199D9C00CE9A08 /* Rdio.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765FC0DF74451002DB57D /* CoreGraphics.framework */,

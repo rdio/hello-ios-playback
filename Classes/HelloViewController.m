@@ -38,7 +38,7 @@
     if (_player == nil) {
         Rdio *sharedRdio = [HelloAppDelegate rdioInstance];
         if (sharedRdio.player == nil) {
-            [sharedRdio initPlayerWithDelegate:self];
+            [sharedRdio preparePlayerWithDelegate:self];
         }
         _player = sharedRdio.player;
     }
