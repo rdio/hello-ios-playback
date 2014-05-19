@@ -314,10 +314,8 @@
     if (!_playing) {
         NSArray* keys = [@"t15907959,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
         [self.player playSources:keys];
-        [self startObservers];
     } else {
         [self.player togglePause];
-        [self stopObservers];
     }
 }
 
@@ -406,8 +404,10 @@
     _paused = (state == RDPlayerStatePaused);
     if (_paused || !_playing) {
         [_playButton setTitle:@"Play" forState:UIControlStateNormal];
+        [self stopObservers];
     } else {
         [_playButton setTitle:@"Pause" forState:UIControlStateNormal];
+        [self startObservers];
     }
 }
 
