@@ -14,8 +14,16 @@
 @property (strong, nonatomic) IBOutlet UIButton *loginButton;
 @property (strong, nonatomic) IBOutlet UIButton *playPauseButton;
 
+@property (strong, nonatomic) IBOutlet UIButton *nextButton;
+@property (strong, nonatomic) IBOutlet UIButton *previousButton;
+@property (strong, nonatomic) IBOutlet UIButton *stopButton;
+
+
 - (IBAction)loginTapped:(id)sender;
 - (IBAction)playPauseTapped:(id)sender;
+- (IBAction)nextButtonTapped:(id)sender;
+- (IBAction)previousButtonTapped:(id)sender;
+- (IBAction)stopButtonTapped:(id)sender;
 
 @end
 

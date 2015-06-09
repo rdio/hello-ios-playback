@@ -17,6 +17,9 @@
     BOOL _playing;
     BOOL _paused;
     BOOL _loggedIn;
+
+    double _currentDuration;
+    double _currentPosition;
 }
 
 @end
@@ -35,10 +38,6 @@
     _player = [_rdio preparePlayerWithDelegate:self];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 - (IBAction)loginTapped:(id)sender
 {
@@ -48,20 +47,6 @@
         [_rdio logout];
     } else {
         [_rdio authorizeFromController:self];
-    }
-}
-
-- (IBAction)playPauseTapped:(id)sender
-{
-    NSLog(@"Play/pause button tapped!");
-    if (!_playing) {
-        // Nothing's been "played" yet, so queue up and play something
-        NSArray *keys = [@"t15907959,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
-        [_player.queue add:keys];
-        [_player playFromQueue:0];
-    } else {
-        // Otherwise, just toggle play/pause
-        [_player togglePause];
     }
 }
 
@@ -79,6 +64,52 @@
 
     // Re-initialize the player on login changes
     _player = [_rdio preparePlayerWithDelegate:self];
+}
+
+
+#pragma mark - Playback controls
+- (IBAction)playPauseTapped:(id)sender
+{
+    NSLog(@"Play/pause button tapped!");
+    if (!_playing) {
+        // Nothing's been "played" yet, so queue up and play something
+        NSArray *keys = [@"t15907959,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
+        [_player.queue add:keys];
+        [_player playFromQueue:0];
+    } else {
+        // Otherwise, just toggle play/pause
+        [_player togglePause];
+    }
+}
+
+- (IBAction)nextButtonTapped:(id)sender
+{
+    if (_playing) {
+        [_player next];
+    }
+}
+
+- (IBAction)previousButtonTapped:(id)sender
+{
+    // The `previous` method automatically goes to the previous track,
+    // so to make this more like a "normal" music player, check the current
+    // position, and restart the current track if it's not near the beginning.
+
+    if (_playing) {
+        if (_player.position > 3.0) {
+            [_player seekToPosition:0.0];
+        } else {
+            [_player previous];
+        }
+    }
+
+}
+
+- (IBAction)stopButtonTapped:(id)sender
+{
+    if (_playing) {
+        [_player stop];
+    }
 }
 
 

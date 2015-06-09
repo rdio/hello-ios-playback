@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -43,20 +44,56 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="utM-WV-cIh">
+                                <rect key="frame" x="529" y="80" width="55" height="30"/>
+                                <state key="normal" title="Next &gt;&gt;">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="nextButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="X7v-J6-YmM"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ibX-KM-iVj">
+                                <rect key="frame" x="16" y="80" width="82" height="30"/>
+                                <state key="normal" title="&lt;&lt; Previous">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="previousButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wvo-ND-kOV"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="urQ-9v-LrR">
+                                <rect key="frame" x="284" y="130" width="33" height="30"/>
+                                <state key="normal" title="Stop">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="stopButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="2ZP-Rb-KcK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="centerX" secondItem="oj4-tc-k8O" secondAttribute="centerX" id="46g-d4-Ow0"/>
+                            <constraint firstAttribute="centerX" secondItem="urQ-9v-LrR" secondAttribute="centerX" id="9uN-mg-OIA"/>
+                            <constraint firstItem="utM-WV-cIh" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="HkV-YV-tUk"/>
+                            <constraint firstItem="ghJ-rO-eqE" firstAttribute="centerY" secondItem="utM-WV-cIh" secondAttribute="centerY" id="N3f-Ma-6fF"/>
                             <constraint firstAttribute="centerX" secondItem="z4l-LJ-gju" secondAttribute="centerX" id="OYa-n6-Eyn"/>
                             <constraint firstItem="oj4-tc-k8O" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="TL0-eE-jgq"/>
                             <constraint firstItem="ghJ-rO-eqE" firstAttribute="top" secondItem="oj4-tc-k8O" secondAttribute="bottom" constant="20" id="WJj-Fz-NVK"/>
+                            <constraint firstItem="urQ-9v-LrR" firstAttribute="top" secondItem="ghJ-rO-eqE" secondAttribute="bottom" constant="20" id="Y8b-bx-bOc"/>
+                            <constraint firstItem="ibX-KM-iVj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="YSG-wk-oSa"/>
+                            <constraint firstItem="ghJ-rO-eqE" firstAttribute="centerY" secondItem="ibX-KM-iVj" secondAttribute="centerY" id="ZzW-t3-jhn"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="z4l-LJ-gju" secondAttribute="bottom" constant="20" id="anF-EW-UkK"/>
                             <constraint firstAttribute="centerX" secondItem="ghJ-rO-eqE" secondAttribute="centerX" id="vlH-rU-aEM"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="loginButton" destination="oj4-tc-k8O" id="4t4-un-O4S"/>
+                        <outlet property="nextButton" destination="utM-WV-cIh" id="059-Ha-rCP"/>
                         <outlet property="playPauseButton" destination="ghJ-rO-eqE" id="CZn-SH-eYO"/>
+                        <outlet property="previousButton" destination="ibX-KM-iVj" id="YSg-po-9Vd"/>
+                        <outlet property="stopButton" destination="urQ-9v-LrR" id="6Xe-N2-Kpp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
