@@ -25,6 +25,7 @@
 
     BOOL _observingPlayer;
     id _positionObserver;
+    id _levelObserver;
 }
 
 @end
@@ -38,6 +39,8 @@
 @synthesize positionLabel = _positionLabel;
 @synthesize durationLabel = _durationLabel;
 
+@synthesize leftAudioLevelSlider = _leftAudioLevelSlider;
+@synthesize rightAudioLevelSlider = _rightAudioLevelSlider;
 
 #pragma mark - View Lifecycle
 - (void)viewDidLoad {
@@ -148,30 +151,30 @@
 {
     if ([_player isEqual:object]) {  // should always be true
         if ([@"currentTrack" isEqualToString:keyPath]) {
-            /*
+
             __block NSString *trackKey = [change valueForKey:NSKeyValueChangeNewKey];
 
             if (trackKey && [trackKey isKindOfClass:[NSString class]]) {
 
-                __weak __typeof__(self) weakSelf = self;
-                [_rdio callAPIMethod:@"get"
-                      withParameters:@{@"keys": trackKey,
-                                       @"extras": @"-*,name,artist"
-                                       }
-                             success:^(NSDictionary *result) {
-                                 __typeof__(self) strongSelf = weakSelf;
-                                 NSDictionary *metadata = [result objectForKey:trackKey];
-                                 [strongSelf.artistLabel setText:[metadata objectForKey:@"artist"]];
-                                 [strongSelf.trackLabel setText:[metadata objectForKey:@"name"]];
-                             }
-                             failure:^(NSError *error) {
-                                 NSLog(@"Error getting current track info: %@", error);
-                             }];
+                NSDictionary *currentSourceInfo = _player.currentSource;
+                NSString *sourceType = [currentSourceInfo objectForKey:@"type"];
+                NSDictionary *currentTrackInfo;
+                if ([@"t" isEqualToString:sourceType]) {
+                    currentTrackInfo = currentSourceInfo;
+                } else {
+                    NSArray *tracksArray = [currentSourceInfo objectForKey:@"tracks"];
+                    if (tracksArray) {
+                        // tracksArray should exist, but if it doesn't, fail gracefully instead of crashing
+                        currentTrackInfo = [tracksArray objectAtIndex:_player.currentTrackIndex];
+                    }
+                }
+
+                //_artistLabel
+
             } else {
-                [_trackLabel setText:@""];
-                [_artistLabel setText:@""];
+                //[_trackLabel setText:@""];
+                //[_artistLabel setText:@""];
             }
-             */
         } else if ([@"duration" isEqualToString:keyPath]) {
             NSNumber *duration = [change valueForKey:NSKeyValueChangeNewKey];
             _currentDuration = [duration doubleValue];
@@ -186,6 +189,7 @@
         _observingPlayer = YES;
 
         [_player addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionNew context:nil];
+        [_player addObserver:self forKeyPath:@"currentTrack" options:NSKeyValueObservingOptionNew context:nil];
 
         __weak __typeof(self)weakSelf = self;
         if (!_positionObserver) {
@@ -199,6 +203,15 @@
                                                                      }
                                                                  }];
         }
+
+        if (!_levelObserver) {
+            _levelObserver = [_player addPeriodicLevelObserverForInterval:CMTimeMake(1, 100)
+                                                                    queue:dispatch_get_main_queue()
+                                                               usingBlock:^(Float32 left, Float32 right) {
+                                                                   __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                   [strongSelf setMonitorValuesForLeft:left andRight:right];
+                                                               }];
+        }
     }
 
 }
@@ -207,10 +220,16 @@
 {
     if (_observingPlayer) {
         [_player removeObserver:self forKeyPath:@"duration"];
+        [_player removeObserver:self forKeyPath:@"currentTrack"];
 
         if (_positionObserver) {
             [_player removeTimeObserver:_positionObserver];
             _positionObserver = nil;
+        }
+
+        if (_levelObserver) {
+            [_player removeLevelObserver:_levelObserver];
+            _levelObserver = nil;
         }
 
         _observingPlayer = NO;
@@ -218,7 +237,7 @@
 }
 
 
-#pragma mark - Playhead UI
+#pragma mark - Playback UI
 - (NSString *)formattedTimeForInterval:(NSTimeInterval)interval
 {
     NSInteger min = (NSInteger) interval / 60;
@@ -233,6 +252,17 @@
         _positionLabel.text = [self formattedTimeForInterval:seconds];
         _seekSlider.value = seconds / _currentDuration;
     }
+}
+
+- (void)setMonitorValuesForLeft:(Float32)left andRight:(Float32)right
+{
+    // Playback levels come in as a linear signal between 0.0 and 1.0
+    // this math converts it to a logarithmic (decibel) scale.
+    double leftLinear = pow(10, (0.05 * left));
+    double rightLinear = pow(10, (0.05 * right));
+
+    _leftAudioLevelSlider.value = leftLinear;
+    _rightAudioLevelSlider.value = rightLinear;
 }
 
 

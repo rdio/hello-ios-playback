@@ -22,6 +22,9 @@
 @property (strong, nonatomic) IBOutlet UILabel *positionLabel;
 @property (strong, nonatomic) IBOutlet UILabel *durationLabel;
 
+@property (strong, nonatomic) IBOutlet UISlider *leftAudioLevelSlider;
+@property (strong, nonatomic) IBOutlet UISlider *rightAudioLevelSlider;
+
 
 - (IBAction)loginTapped:(id)sender;
 - (IBAction)playPauseTapped:(id)sender;
