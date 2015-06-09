@@ -1,15 +1,34 @@
-A Simple Playback Example For iOS
-=================================
+A more advanced Playback example for iOS
+========================================
 
-This example application demonstrates how to do simple playback and authentication with the Rdio iOS SDK.
+This example builds on the simple version in `master` to illustrate some more
+of the SDK's features.
 
-To use this, you'll need to head over to https://rdio.com/developers/, create an OAuth 2.0 application,
-and put your `client_id` and `client_secret` into `Hello/ClientCredentials.h`.
+Instead of just being a simple Hello World that plays back audio, this version
+contains playback controls and UI features that you might expect to find in a
+normal music playing application.
 
-See [`Hello/ClientCredentials_EXAMPLE.h`](https://github.com/rdio/hello-ios-playback/blob/master/Hello/ClientCredentials_EXAMPLE.h)
-for an example of what that file should look like.
+This version includes:
 
+- Transport controls:
+  - Play
+  - Pause
+  - Previous track (or restart, if you're well into the current track)
+  - Next track
+  - Stop
+  - Seek via the position bar
+- Playback metadata
+  - Artist
+  - Track
+  - Album
+  - The source used to play back the track (which might be the album, a
+    playlist, a station, or the track itself)
+  - Track duration
+  - Current position in the track
+- Audio VU meters
 
-### More advanced usage
-
-A more advanced example is coming soon.
+As with the `master` branch, you'll still need to head over to
+https://rdio.com/developers/ to get a `client_id` and `client_secret` to put
+into `Hello/ClientCredentials.h`.  But, if you already did that on the `master`
+branch, you should be able to check out this branch and run it without having
+to update that file.
