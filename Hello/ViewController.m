@@ -16,10 +16,15 @@
 
     BOOL _playing;
     BOOL _paused;
+    BOOL _seeking;
+
     BOOL _loggedIn;
 
     double _currentDuration;
     double _currentPosition;
+
+    BOOL _observingPlayer;
+    id _positionObserver;
 }
 
 @end
@@ -29,6 +34,12 @@
 @synthesize loginButton = _loginButton;
 @synthesize playPauseButton = _playPauseButton;
 
+@synthesize seekSlider = _seekSlider;
+@synthesize positionLabel = _positionLabel;
+@synthesize durationLabel = _durationLabel;
+
+
+#pragma mark - View Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
 
@@ -36,9 +47,29 @@
     [_rdio setDelegate:self];
 
     _player = [_rdio preparePlayerWithDelegate:self];
+
+    [_positionLabel setText:@""];
+    [_durationLabel setText:@""];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    if (_playing) {
+        [self startObservers];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+
+    [self stopObservers];
 }
 
 
+#pragma mark - Rdio Login control
 - (IBAction)loginTapped:(id)sender
 {
     NSLog(@"Login button tapped");
@@ -112,6 +143,99 @@
     }
 }
 
+#pragma mark - KVO & Block observation
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([_player isEqual:object]) {  // should always be true
+        if ([@"currentTrack" isEqualToString:keyPath]) {
+            /*
+            __block NSString *trackKey = [change valueForKey:NSKeyValueChangeNewKey];
+
+            if (trackKey && [trackKey isKindOfClass:[NSString class]]) {
+
+                __weak __typeof__(self) weakSelf = self;
+                [_rdio callAPIMethod:@"get"
+                      withParameters:@{@"keys": trackKey,
+                                       @"extras": @"-*,name,artist"
+                                       }
+                             success:^(NSDictionary *result) {
+                                 __typeof__(self) strongSelf = weakSelf;
+                                 NSDictionary *metadata = [result objectForKey:trackKey];
+                                 [strongSelf.artistLabel setText:[metadata objectForKey:@"artist"]];
+                                 [strongSelf.trackLabel setText:[metadata objectForKey:@"name"]];
+                             }
+                             failure:^(NSError *error) {
+                                 NSLog(@"Error getting current track info: %@", error);
+                             }];
+            } else {
+                [_trackLabel setText:@""];
+                [_artistLabel setText:@""];
+            }
+             */
+        } else if ([@"duration" isEqualToString:keyPath]) {
+            NSNumber *duration = [change valueForKey:NSKeyValueChangeNewKey];
+            _currentDuration = [duration doubleValue];
+            _durationLabel.text = [self formattedTimeForInterval:_currentDuration];
+        }
+    }
+}
+
+- (void)startObservers
+{
+    if (!_observingPlayer) {
+        _observingPlayer = YES;
+
+        [_player addObserver:self forKeyPath:@"duration" options:NSKeyValueObservingOptionNew context:nil];
+
+        __weak __typeof(self)weakSelf = self;
+        if (!_positionObserver) {
+            _positionObserver = [_player addPeriodicTimeObserverForInterval:CMTimeMake(1, 100)
+                                                                      queue:dispatch_get_main_queue()
+                                                                 usingBlock:^(CMTime time) {
+                                                                     __strong __typeof(weakSelf)strongSelf = weakSelf;
+                                                                     Float64 seconds = CMTimeGetSeconds(time);
+                                                                     if (!isnan(seconds) && !isinf(seconds)) {
+                                                                         [strongSelf positionUpdated:seconds];
+                                                                     }
+                                                                 }];
+        }
+    }
+
+}
+
+- (void)stopObservers
+{
+    if (_observingPlayer) {
+        [_player removeObserver:self forKeyPath:@"duration"];
+
+        if (_positionObserver) {
+            [_player removeTimeObserver:_positionObserver];
+            _positionObserver = nil;
+        }
+
+        _observingPlayer = NO;
+    }
+}
+
+
+#pragma mark - Playhead UI
+- (NSString *)formattedTimeForInterval:(NSTimeInterval)interval
+{
+    NSInteger min = (NSInteger) interval / 60;
+    NSInteger sec = (NSInteger) interval % 60;
+
+    return [NSString stringWithFormat:@"%d:%02d", (int)min, (int)sec];
+}
+
+- (void)positionUpdated:(Float64)seconds
+{
+    if (!_seeking) {
+        _positionLabel.text = [self formattedTimeForInterval:seconds];
+        _seekSlider.value = seconds / _currentDuration;
+    }
+}
+
+
 
 #pragma mark - RdioDelegate
 - (void)rdioDidAuthorizeUser:(NSDictionary *)user
@@ -156,8 +280,10 @@
 
     if (_paused || !_playing) {
         [_playPauseButton setTitle:@"Play" forState:UIControlStateNormal];
+        [self stopObservers];
     } else {
         [_playPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
+        [self startObservers];
     }
 }
 

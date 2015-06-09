@@ -18,6 +18,10 @@
 @property (strong, nonatomic) IBOutlet UIButton *previousButton;
 @property (strong, nonatomic) IBOutlet UIButton *stopButton;
 
+@property (strong, nonatomic) IBOutlet UISlider *seekSlider;
+@property (strong, nonatomic) IBOutlet UILabel *positionLabel;
+@property (strong, nonatomic) IBOutlet UILabel *durationLabel;
+
 
 - (IBAction)loginTapped:(id)sender;
 - (IBAction)playPauseTapped:(id)sender;
