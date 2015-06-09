@@ -116,12 +116,37 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&quot;Track Name&quot;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kdc-zs-F33">
+                                <rect key="frame" x="16" y="351" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Album Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KVe-Ck-7xo">
+                                <rect key="frame" x="16" y="380" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Source Name (source type)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tak-cl-9iE">
+                                <rect key="frame" x="16" y="144" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Artist Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E2x-cc-bzr">
+                                <rect key="frame" x="16" y="322" width="568" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="vxV-tU-IbH" firstAttribute="leading" secondItem="qNc-Kp-le5" secondAttribute="trailing" constant="8" id="1Lf-L1-HIK"/>
                             <constraint firstItem="ghJ-rO-eqE" firstAttribute="top" secondItem="B6d-h2-vfH" secondAttribute="bottom" constant="20" id="2QF-yS-LTx"/>
                             <constraint firstAttribute="centerX" secondItem="oj4-tc-k8O" secondAttribute="centerX" id="46g-d4-Ow0"/>
+                            <constraint firstItem="E2x-cc-bzr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="7PF-qz-z1X"/>
                             <constraint firstItem="B6d-h2-vfH" firstAttribute="leading" secondItem="YTl-Jh-mQ0" secondAttribute="trailing" constant="8" id="9rH-ry-jQN"/>
                             <constraint firstAttribute="centerX" secondItem="urQ-9v-LrR" secondAttribute="centerX" id="9uN-mg-OIA"/>
                             <constraint firstItem="YTl-Jh-mQ0" firstAttribute="centerY" secondItem="B6d-h2-vfH" secondAttribute="centerY" id="AxQ-WC-bsK"/>
@@ -129,28 +154,41 @@
                             <constraint firstItem="myB-V8-9yn" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="DmQ-Iy-TuT"/>
                             <constraint firstItem="utM-WV-cIh" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="HkV-YV-tUk"/>
                             <constraint firstItem="ghJ-rO-eqE" firstAttribute="centerY" secondItem="utM-WV-cIh" secondAttribute="centerY" id="N3f-Ma-6fF"/>
+                            <constraint firstItem="Kdc-zs-F33" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Ngi-1e-u9y"/>
                             <constraint firstAttribute="centerX" secondItem="z4l-LJ-gju" secondAttribute="centerX" id="OYa-n6-Eyn"/>
+                            <constraint firstItem="KVe-Ck-7xo" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Oyr-bz-ZdE"/>
+                            <constraint firstItem="KVe-Ck-7xo" firstAttribute="top" secondItem="Kdc-zs-F33" secondAttribute="bottom" constant="8" id="PQo-Lt-CzF"/>
                             <constraint firstItem="ceX-Sw-Sox" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Pft-qB-sjd"/>
+                            <constraint firstItem="KVe-Ck-7xo" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="SAN-Zj-IgU"/>
                             <constraint firstItem="jhw-ct-zhe" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="SHK-NM-13i"/>
                             <constraint firstItem="oj4-tc-k8O" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="10" id="TL0-eE-jgq"/>
+                            <constraint firstItem="tak-cl-9iE" firstAttribute="top" secondItem="vxV-tU-IbH" secondAttribute="bottom" constant="8" id="Tg8-Fr-zvF"/>
+                            <constraint firstItem="Kdc-zs-F33" firstAttribute="top" secondItem="E2x-cc-bzr" secondAttribute="bottom" constant="8" id="VBm-cl-33I"/>
                             <constraint firstItem="urQ-9v-LrR" firstAttribute="top" secondItem="ghJ-rO-eqE" secondAttribute="bottom" constant="20" id="Y8b-bx-bOc"/>
                             <constraint firstItem="ibX-KM-iVj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="YSG-wk-oSa"/>
                             <constraint firstItem="ghJ-rO-eqE" firstAttribute="centerY" secondItem="ibX-KM-iVj" secondAttribute="centerY" id="ZzW-t3-jhn"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="z4l-LJ-gju" secondAttribute="bottom" constant="20" id="anF-EW-UkK"/>
                             <constraint firstItem="myB-V8-9yn" firstAttribute="top" secondItem="oj4-tc-k8O" secondAttribute="bottom" constant="8" id="aom-Vq-lWh"/>
+                            <constraint firstItem="tak-cl-9iE" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="dmd-pF-yC8"/>
                             <constraint firstItem="qNc-Kp-le5" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="fkq-WG-xpe"/>
                             <constraint firstItem="myB-V8-9yn" firstAttribute="centerY" secondItem="jhw-ct-zhe" secondAttribute="centerY" id="gg7-56-jmx"/>
                             <constraint firstItem="myB-V8-9yn" firstAttribute="leading" secondItem="jhw-ct-zhe" secondAttribute="trailing" constant="8" id="gsI-gF-leW"/>
+                            <constraint firstItem="Kdc-zs-F33" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="hMI-Fd-qOC"/>
                             <constraint firstItem="vxV-tU-IbH" firstAttribute="top" secondItem="myB-V8-9yn" secondAttribute="bottom" constant="8" id="hec-5I-o7R"/>
+                            <constraint firstItem="E2x-cc-bzr" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="lBD-Pq-7bD"/>
+                            <constraint firstItem="tak-cl-9iE" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="ngV-3u-BUd"/>
                             <constraint firstItem="z4l-LJ-gju" firstAttribute="top" secondItem="urQ-9v-LrR" secondAttribute="bottom" constant="20" id="pzo-2t-GEd"/>
                             <constraint firstItem="vxV-tU-IbH" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="qtd-Kd-gmZ"/>
                             <constraint firstItem="qNc-Kp-le5" firstAttribute="centerY" secondItem="vxV-tU-IbH" secondAttribute="centerY" id="uha-Dx-oZF"/>
                             <constraint firstItem="YTl-Jh-mQ0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="ukY-7I-jKs"/>
                             <constraint firstAttribute="centerX" secondItem="ghJ-rO-eqE" secondAttribute="centerX" id="vlH-rU-aEM"/>
+                            <constraint firstItem="B6d-h2-vfH" firstAttribute="top" secondItem="KVe-Ck-7xo" secondAttribute="bottom" constant="8" id="x9m-5R-qn5"/>
                             <constraint firstItem="ceX-Sw-Sox" firstAttribute="leading" secondItem="B6d-h2-vfH" secondAttribute="trailing" constant="8" id="zBY-bt-ozc"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="albumNameLabel" destination="KVe-Ck-7xo" id="Yjx-lp-kpv"/>
+                        <outlet property="artistNameLabel" destination="E2x-cc-bzr" id="DTE-JS-Le5"/>
                         <outlet property="durationLabel" destination="ceX-Sw-Sox" id="lQY-M0-mm2"/>
                         <outlet property="leftAudioLevelSlider" destination="myB-V8-9yn" id="soh-sB-b9h"/>
                         <outlet property="loginButton" destination="oj4-tc-k8O" id="4t4-un-O4S"/>
@@ -160,7 +198,9 @@
                         <outlet property="previousButton" destination="ibX-KM-iVj" id="YSg-po-9Vd"/>
                         <outlet property="rightAudioLevelSlider" destination="vxV-tU-IbH" id="nOW-OC-bc1"/>
                         <outlet property="seekSlider" destination="B6d-h2-vfH" id="RJG-cR-e68"/>
+                        <outlet property="sourceNameLabel" destination="tak-cl-9iE" id="J0K-va-wZs"/>
                         <outlet property="stopButton" destination="urQ-9v-LrR" id="6Xe-N2-Kpp"/>
+                        <outlet property="trackNameLabel" destination="Kdc-zs-F33" id="Trd-Wj-WYJ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

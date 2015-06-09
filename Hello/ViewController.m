@@ -42,6 +42,11 @@
 @synthesize leftAudioLevelSlider = _leftAudioLevelSlider;
 @synthesize rightAudioLevelSlider = _rightAudioLevelSlider;
 
+@synthesize sourceNameLabel = _sourceNameLabel;
+@synthesize artistNameLabel = _artistNameLabel;
+@synthesize trackNameLabel = _trackNameLabel;
+@synthesize albumNameLabel = _albumNameLabel;
+
 #pragma mark - View Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -50,9 +55,6 @@
     [_rdio setDelegate:self];
 
     _player = [_rdio preparePlayerWithDelegate:self];
-
-    [_positionLabel setText:@""];
-    [_durationLabel setText:@""];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -107,7 +109,7 @@
     NSLog(@"Play/pause button tapped!");
     if (!_playing) {
         // Nothing's been "played" yet, so queue up and play something
-        NSArray *keys = [@"t15907959,t1992210,t7418766,t8816323" componentsSeparatedByString:@","];
+        NSArray *keys = [@"t15907959,t1992210,a745284,t7418766,p3571311,t8816323" componentsSeparatedByString:@","];
         [_player.queue add:keys];
         [_player playFromQueue:0];
     } else {
@@ -143,6 +145,7 @@
 {
     if (_playing) {
         [_player stop];
+        [_player.queue removeAll];
     }
 }
 
@@ -169,8 +172,7 @@
                     }
                 }
 
-                //_artistLabel
-
+                [self updateTrackMetadata:currentTrackInfo];
             } else {
                 //[_trackLabel setText:@""];
                 //[_artistLabel setText:@""];
@@ -263,6 +265,22 @@
 
     _leftAudioLevelSlider.value = leftLinear;
     _rightAudioLevelSlider.value = rightLinear;
+}
+
+- (void)updateTrackMetadata:(NSDictionary *)trackInfo
+{
+    [_artistNameLabel setText:[trackInfo objectForKey:@"artist"]];
+
+    NSString *trackText = [NSString stringWithFormat:@"\"%@\"", [trackInfo objectForKey:@"name"]];
+    [_trackNameLabel setText:trackText];
+
+    [_albumNameLabel setText:[trackInfo objectForKey:@"album"]];
+
+    NSDictionary *currentSource = _player.currentSource;
+    NSString *sourceText = [NSString stringWithFormat:@"%@ (%@)",
+                            [currentSource objectForKey:@"name"],
+                            [currentSource objectForKey:@"type"]];
+    [_sourceNameLabel setText:sourceText];
 }
 
 

@@ -25,6 +25,12 @@
 @property (strong, nonatomic) IBOutlet UISlider *leftAudioLevelSlider;
 @property (strong, nonatomic) IBOutlet UISlider *rightAudioLevelSlider;
 
+@property (strong, nonatomic) IBOutlet UILabel *sourceNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *artistNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *trackNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *albumNameLabel;
+
+
 
 - (IBAction)loginTapped:(id)sender;
 - (IBAction)playPauseTapped:(id)sender;
