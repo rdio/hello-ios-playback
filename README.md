@@ -12,4 +12,5 @@ for an example of what that file should look like.
 
 ### More advanced usage
 
-A more advanced example is coming soon.
+See the [`advanced`](https://github.com/rdio/hello-ios-playback/tree/advanced/)
+branch for a more thorough example application.
