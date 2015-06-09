@@ -17,6 +17,7 @@
     BOOL _playing;
     BOOL _paused;
     BOOL _seeking;
+    BOOL _seekInitiated;
 
     BOOL _loggedIn;
 
@@ -149,6 +150,25 @@
     }
 }
 
+- (IBAction)seekDragBegan:(id)sender
+{
+    if (!_playing) return;
+    _seeking = YES;
+    _seekInitiated = NO;
+}
+
+- (IBAction)seekDragEnded:(id)sender
+{
+    if (!_playing || !_seeking) return;
+
+    NSTimeInterval position = _seekSlider.value * _currentDuration;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        [_player seekToPosition:position];
+        _seekInitiated = YES;
+    });
+}
+
 #pragma mark - KVO & Block observation
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -239,7 +259,7 @@
 }
 
 
-#pragma mark - Playback UI
+#pragma mark - Playback Displays
 - (NSString *)formattedTimeForInterval:(NSTimeInterval)interval
 {
     NSInteger min = (NSInteger) interval / 60;
@@ -332,6 +352,21 @@
     } else {
         [_playPauseButton setTitle:@"Pause" forState:UIControlStateNormal];
         [self startObservers];
+    }
+
+    if (_seeking && _seekInitiated) {
+        // If we're seeking, and the seek was initiated, then we should reset the _seeking flag
+        // once we go from buffering to playing.  The main purpose of this is to delay updating
+        // the position slider until playback resumes so that it doesn't "snap back" to the old
+        // position while it's buffering.
+
+        // It's worth noting, though, that there are some edge cases here -- If the user pauses
+        // playback while buffering, this specific state transition won't happen, so you'll have
+        // to handle that case in your own implementation.
+        if (oldState == RDPlayerStateBuffering && newState == RDPlayerStatePlaying) {
+            _seeking = NO;
+            _seekInitiated = NO;
+        }
     }
 }
 

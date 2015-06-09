@@ -33,10 +33,14 @@
 
 
 - (IBAction)loginTapped:(id)sender;
+
 - (IBAction)playPauseTapped:(id)sender;
 - (IBAction)nextButtonTapped:(id)sender;
 - (IBAction)previousButtonTapped:(id)sender;
 - (IBAction)stopButtonTapped:(id)sender;
+
+- (IBAction)seekDragBegan:(id)sender;
+- (IBAction)seekDragEnded:(id)sender;
 
 @end
 

@@ -91,6 +91,11 @@
                             </label>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="B6d-h2-vfH">
                                 <rect key="frame" x="76" y="409" width="448" height="31"/>
+                                <connections>
+                                    <action selector="seekDragBegan:" destination="BYZ-38-t0r" eventType="touchDown" id="d9T-C6-5Xv"/>
+                                    <action selector="seekDragEnded:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="DYS-uG-tQl"/>
+                                    <action selector="seekDragEnded:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Lp9-6Y-MpM"/>
+                                </connections>
                             </slider>
                             <slider opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="myB-V8-9yn">
                                 <rect key="frame" x="66" y="68" width="520" height="31"/>
