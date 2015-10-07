@@ -79,10 +79,9 @@
 - (id)initWithConsumerKey:(NSString *)key andSecret:(NSString *)secret delegate:(id<RdioDelegate>)delegate;
 
 /**
- * Initializes the Rdio API with your OAuth 2.0 client id and client secret.
+ * Initializes the Rdio API with your OAuth 2.0 client ID and client secret.
  * 
- * Note that OAuth 2.0 is only available in the iOS SDK for select partners.
- * @param clientId Your OAuth 2.0 client id
+ * @param clientId Your OAuth 2.0 client ID
  * @param secret Your OAuth 2.0 client secret, or nil if you expect to obtain an access token from some other channel.
  * @param delegate Delegate for receiving state changes, or nil
  */
@@ -155,6 +154,16 @@
  * @param requestedScope The `scope` of access that you'd like to request through OAuth 2.0.  If you are using OAuth 1.0, this parameter is ignored and this method will behave the same way as `authorizeFromController:`.
  */
 - (void)authorizeFromController:(UIViewController *)currentController scope:(NSString *)requestedScope;
+
+/**
+ * Presents a modal login dialog to allow your end user to authenticate their Rdio account.  Your
+ * authentication request will inclue the permissions covered by the `scope` parameter that you
+ * pass in.
+ * @param currentController Controller from which the login view should be launched
+ * @param requestedScope The `scope` of access that you'd like to request through OAuth 2.0.  If you are using OAuth 1.0, this parameter is ignored and this method will behave the same way as `authorizeFromController:`.
+ * @param params A map of key/value pairs which will be appended to the OAuth 2.0 authorization URL
+ */
+- (void)authorizeFromController:(UIViewController *)currentController scope:(NSString *)requestedScope params:(NSDictionary *)withParams;
 
 /**
  * Attempts to reauthorize using an access token from a previous session.
