@@ -126,6 +126,19 @@ typedef enum {
  */
 - (void)rdioPlayerSetAudioSessionActive:(BOOL)beActive;
 
+
+/**
+ * Notification that an advertisement has begun playing
+ *
+ * @param ad Metadata for the ad such as name, duration, and image
+ */
+- (void)rdioPlayerDidStartAd:(NSDictionary *)ad;
+
+/**
+ * Notification that an advertisement has finished playing
+ */
+- (void)rdioPlayerDidFinishAd;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -156,8 +169,7 @@ typedef enum {
   RDSession *session_;
   
   int currentTrackIndex_;
-  NSString *currentTrack_;
-  NSDictionary *currentTrackInfo_;
+  NSString *currentTrackKey_;
   AudioStreamer *audioStream_;
   
   int nextTrackIndex_;
@@ -360,12 +372,14 @@ typedef enum {
 @property (nonatomic, readonly) RDPlayerQueue *queue;
 
 /**
- * Current playing source
+ * Metadata for the current source such as the track and artist name.
+ *
+ * If the queued source was a track, this will be the same as \ref RDPlayer::currentTrack
  */
 @property (nonatomic, readonly) NSDictionary *currentSource;
 
 /**
- * The station manager for the current playing source, or nil if the source is not a station
+ * Station manager for the current playing source, or nil if the source is not a station
  */
 @property (nonatomic, readonly) RDStationManager *stationManager;
 
@@ -385,12 +399,17 @@ typedef enum {
 @property (nonatomic, readonly) double duration;
 
 /**
- * The key of the current track.
+ * Key of the current track.
  */
-@property (nonatomic, readonly) NSString *currentTrack;
+@property (nonatomic, readonly) NSString *currentTrackKey;
 
 /**
- * The index of the current playing track within the \ref RDPlayer::trackKeys "trackKeys" array.
+ * Metadata for the current track such as the track and artist name.
+ */
+@property (nonatomic, readonly) NSDictionary *currentTrack;
+
+/**
+ * Index of the current playing track within the \ref RDPlayer::trackKeys "trackKeys" array.
  */
 @property (nonatomic, readonly) int currentTrackIndex;
 
