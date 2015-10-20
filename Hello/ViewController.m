@@ -175,28 +175,8 @@
     if ([_player isEqual:object]) {  // should always be true
         if ([@"currentTrack" isEqualToString:keyPath]) {
 
-            __block NSString *trackKey = [change valueForKey:NSKeyValueChangeNewKey];
-
-            if (trackKey && [trackKey isKindOfClass:[NSString class]]) {
-
-                NSDictionary *currentSourceInfo = _player.currentSource;
-                NSString *sourceType = [currentSourceInfo objectForKey:@"type"];
-                NSDictionary *currentTrackInfo;
-                if ([@"t" isEqualToString:sourceType]) {
-                    currentTrackInfo = currentSourceInfo;
-                } else {
-                    NSArray *tracksArray = [currentSourceInfo objectForKey:@"tracks"];
-                    if (tracksArray) {
-                        // tracksArray should exist, but if it doesn't, fail gracefully instead of crashing
-                        currentTrackInfo = [tracksArray objectAtIndex:_player.currentTrackIndex];
-                    }
-                }
-
-                [self updateTrackMetadata:currentTrackInfo];
-            } else {
-                //[_trackLabel setText:@""];
-                //[_artistLabel setText:@""];
-            }
+            __block NSDictionary *currentTrackInfo = [change valueForKey:NSKeyValueChangeNewKey];
+            [self updateTrackMetadata:currentTrackInfo];
         } else if ([@"duration" isEqualToString:keyPath]) {
             NSNumber *duration = [change valueForKey:NSKeyValueChangeNewKey];
             _currentDuration = [duration doubleValue];
@@ -289,18 +269,20 @@
 
 - (void)updateTrackMetadata:(NSDictionary *)trackInfo
 {
-    [_artistNameLabel setText:[trackInfo objectForKey:@"artist"]];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_artistNameLabel setText:[trackInfo objectForKey:@"artist"]];
 
-    NSString *trackText = [NSString stringWithFormat:@"\"%@\"", [trackInfo objectForKey:@"name"]];
-    [_trackNameLabel setText:trackText];
+        NSString *trackText = [NSString stringWithFormat:@"\"%@\"", [trackInfo objectForKey:@"name"]];
+        [_trackNameLabel setText:trackText];
 
-    [_albumNameLabel setText:[trackInfo objectForKey:@"album"]];
+        [_albumNameLabel setText:[trackInfo objectForKey:@"album"]];
 
-    NSDictionary *currentSource = _player.currentSource;
-    NSString *sourceText = [NSString stringWithFormat:@"%@ (%@)",
-                            [currentSource objectForKey:@"name"],
-                            [currentSource objectForKey:@"type"]];
-    [_sourceNameLabel setText:sourceText];
+        NSDictionary *currentSource = _player.currentSource;
+        NSString *sourceText = [NSString stringWithFormat:@"%@ (%@)",
+                                [currentSource objectForKey:@"name"],
+                                [currentSource objectForKey:@"type"]];
+        [_sourceNameLabel setText:sourceText];
+    });
 }
 
 

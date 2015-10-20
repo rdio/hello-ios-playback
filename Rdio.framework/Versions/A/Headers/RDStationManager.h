@@ -54,4 +54,6 @@
  */
 @property (nonatomic, assign, readonly) NSInteger maxBitrate;
 
+@property (nonatomic, readonly) NSArray *stationTracks;
+
 @end
