@@ -1,0 +1,4 @@
+framework module Rdio {
+    umbrella header "Rdio.h"
+    export *
+}
